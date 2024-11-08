@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulario de Jugador</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        // Script para cambiar a Dark Mode según las preferencias del sistema
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans antialiased">
+    <div class="container mx-auto p-8 max-w-lg">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100" th:text="${jugador.id == null ? 'Nuevo Jugador' : 'Editar Jugador'}"></h1>
+        
+        <form th:action="@{/jugadores/guardar}" th:object="${jugador}" method="post" class="space-y-4">
+            <div>
+                <label for="nombre" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre del Jugador:</label>
+                <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ingrese el nombre" required 
+                    class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-gray-100">
+            </div>
+
+            <div>
+                <label for="fechaNacimiento" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha de Nacimiento:</label>
+                <input type="date" id="fechaNacimiento" th:field="*{fechaNacimiento}" required 
+                    class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-gray-100">
+            </div>
+
+            <div>
+                <label for="categoria" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Categoría:</label>
+                <select id="categoria" th:field="*{categoria.id}" required
+                    class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-gray-100">
+                    <option value="" disabled th:text="${jugador.categoria == null ? 'Seleccione una categoría' : jugador.categoria.nombre}"></option>
+                    <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombre}"></option>
+                </select>
+            </div>
+            
+           <div>
+    <label for="equipos" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Equipo:</label>
+    <select id="equipos" th:field="*{equipos}" multiple
+        class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-gray-100">
+        <option th:each="equipo : ${equipos}" th:value="${equipo.id}"
+                th:text="${equipo.nombre}"
+                th:selected="${jugador.equipos.contains(equipo)}"></option>
+    </select>
+</div>
+
+
+            <div class="flex space-x-4">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-700 dark:hover:bg-blue-800">
+                    Guardar
+                </button>
+                <a href="/jugadores" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

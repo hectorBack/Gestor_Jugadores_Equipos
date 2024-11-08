@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="dark">
+<head>
+<title>Lista de Jugadores</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+	rel="stylesheet">
+<script>
+	// Script para cambiar a Dark Mode según las preferencias del sistema
+	if (window.matchMedia
+			&& window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		document.documentElement.classList.add('dark');
+	} else {
+		document.documentElement.classList.remove('dark');
+	}
+</script>
+</head>
+<body
+	class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans antialiased">
+
+	<!-- Barra de navegación -->
+	<nav class="bg-gray-200 dark:bg-gray-800 p-4 shadow-lg">
+		<div class="container mx-auto flex justify-between items-center">
+			<a href="/"
+				class="text-xl font-bold text-gray-800 dark:text-gray-100">App
+				de Gestion de Equipos</a>
+				
+			<div class="flex space-x-4">
+				<a href="/"
+					class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">Inicio</a>
+				<a href="/jugadores"
+					class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">Jugadores</a>
+				<a href="/categorias"
+					class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">Categorías</a>
+				<a href="/equipos"
+					class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">Equipos</a>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Contenido principal -->
+	<div class="container mx-auto p-8 max-w-4xl">
+		<h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">Jugadores</h1>
+
+		<div class="mb-4 flex justify-between items-center">
+			<a href="/jugadores/nuevo"
+				class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-700 dark:hover:bg-blue-800">
+				Nuevo Jugador </a>
+
+			<!-- Barra de búsqueda alineada a la derecha -->
+			<form th:action="@{/jugadores/buscar}" method="get"
+				class="flex space-x-2">
+				<input type="text" name="q" placeholder="Buscar..."
+					class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100"
+					th:value="${param.q}">
+				<button type="submit"
+					class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+					Buscar</button>
+			</form>
+		</div>
+
+		<table
+			class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+			<thead>
+				<tr
+					class="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+					<th class="py-3 px-4 text-left font-semibold">Nombre</th>
+					<th class="py-3 px-4 text-left font-semibold">Fecha de
+						Nacimiento</th>
+					<th class="py-3 px-4 text-left font-semibold">Categoría</th>
+					<th class="py-3 px-4 text-left font-semibold">Equipos</th>
+					<th class="py-3 px-4 text-left font-semibold">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="jugador : ${jugadores}"
+					class="border-b border-gray-200 dark:border-gray-700">
+					<td class="py-3 px-4" th:text="${jugador.nombre}"></td>
+					<td class="py-3 px-4" th:text="${jugador.fechaNacimiento}"></td>
+					<td class="py-3 px-4" th:text="${jugador.categoria?.nombre}"></td>
+					<td class="py-3 px-4">
+						<ul>
+							<li th:each="equipo : ${jugador.equipos}"
+								th:text="${equipo.nombre}"></li>
+						</ul>
+					</td>
+					<td class="py-3 px-4 flex space-x-2"><a
+						th:href="@{/jugadores/editar/{id}(id=${jugador.id})}"
+						class="text-blue-500 dark:text-blue-400 hover:underline">Editar</a>
+						<a th:href="@{/jugadores/eliminar/{id}(id=${jugador.id})}"
+						class="text-red-500 dark:text-red-400 hover:underline">Eliminar</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+</body>
+</html>
+

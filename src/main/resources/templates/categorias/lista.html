@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Lista de Categorías</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+	rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+
+	<!-- Barra de navegación -->
+	<nav class="bg-gray-200 dark:bg-gray-800 p-4 shadow-lg">
+		<div class="container mx-auto flex justify-between items-center">
+			<a href="/"
+				class="text-xl font-bold text-gray-800 dark:text-gray-100">App
+				de Gestion de Equipos</a>
+			<div class="flex space-x-4">
+				<a href="/"
+					class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">Inicio</a>
+				<a href="/jugadores"
+					class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">Jugadores</a>
+				<a href="/categorias"
+					class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">Categorías</a>
+				<a href="/equipos"
+					class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">Equipos</a>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container mx-auto p-8 max-w-4xl">
+		<h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">Categorías</h1>
+
+		<div class="mb-4">
+			<a href="/categorias/nuevo"
+				class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-700 dark:hover:bg-blue-800">
+				Nueva Categoría </a>
+		</div>
+
+		<table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+			<thead>
+				<tr
+					class="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+					<th class="py-3 px-4 text-left font-semibold">Nombre</th>
+					<th class="py-3 px-4 text-left font-semibold">Edad Mínima</th>
+					<th class="py-3 px-4 text-left font-semibold">Edad Máxima</th>
+					<th class="py-3 px-4 text-left font-semibold">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="categoria : ${categorias}"
+					class="border-b border-gray-200 dark:border-gray-700">
+					<td class="py-3 px-4" th:text="${categoria.nombre}"></td>
+					<td class="py-3 px-4" th:text="${categoria.edadMinima}"></td>
+					<td class="py-3 px-4" th:text="${categoria.edadMaxima}"></td>
+					<td class="py-3 px-4"><a
+						th:href="@{/categorias/editar/{id}(id=${categoria.id})}"
+						class="text-blue-500 dark:text-blue-400 hover:underline"> Editar </a> <a
+						th:href="@{/categorias/eliminar/{id}(id=${categoria.id})}"
+						class="text-red-500 dark:text-red-400 hover:underline"> Eliminar </a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
